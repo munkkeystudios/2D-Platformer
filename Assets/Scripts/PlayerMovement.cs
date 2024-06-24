@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]private float speed;
+    [SerializeField] private float speed;
     [SerializeField] private float jumpSpeed;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
@@ -13,31 +12,30 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private BoxCollider2D boxCollider;
 
-
     private float wallJumpCooldown;
     private float horizontalInput;
 
+    private MovingHorizontalPlatform currentPlatform;
+    private Vector3 platformDeltaMovement;
+
     private void Awake()
     {
-        //Grab references for rigidboy and animator from object
+        // Grab references for rigidbody and animator from object
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
     }
+
     // Start is called before the first frame update
     void Start()
-    { 
-        
+    {
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
-        //body.velocity = new Vector2(horizontalInput * speed,body.velocity.y);
 
-
-        //Flip player when moving left-right
+        // Flip player when moving left-right
         if (horizontalInput > 0.01f)
         {
             transform.localScale = Vector3.one;
@@ -47,14 +45,14 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
-        //Set animator values
+        // Set animator values
         animator.SetBool("run", horizontalInput != 0);
         animator.SetBool("grounded", isGrounded());
 
-        if ( wallJumpCooldown > 0.2f)
+        if (wallJumpCooldown > 0.2f)
         {
-            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
-
+            Vector2 targetVelocity = new Vector2(horizontalInput * speed, body.velocity.y);
+            body.velocity = targetVelocity;
 
             if (onWall() && !isGrounded())
             {
@@ -75,7 +73,16 @@ public class PlayerMovement : MonoBehaviour
         {
             wallJumpCooldown += Time.deltaTime;
         }
+    }
 
+    private void FixedUpdate()
+    {
+        // Apply the platform's delta movement to the player
+        if (currentPlatform != null)
+        {
+            platformDeltaMovement = currentPlatform.DeltaMovement;
+            transform.position += platformDeltaMovement;
+        }
     }
 
     private void Jump()
@@ -94,15 +101,26 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-               body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
+                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
             }
             wallJumpCooldown = 0;
         }
-
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = other.gameObject.GetComponent<MovingHorizontalPlatform>();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = null;
+        }
     }
 
     private bool isGrounded()
