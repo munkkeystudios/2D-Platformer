@@ -2,35 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ladeer_movement : MonoBehaviour
+public class ladder_movement : MonoBehaviour
 {
-    private float vertical;
-    private float speed = 8f;
-    private bool isLadder;
+    private Rigidbody2D rb;
     private bool isClimbing;
+    private float verticalInput;
 
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float climbSpeed = 5f;
 
-    void Update()
+    private void Start()
     {
-        vertical = Input.GetAxisRaw("Vertical");
-
-        if (isLadder && Mathf.Abs(vertical) > 0f)
-        {
-            isClimbing = true;
-        }
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        verticalInput = Input.GetAxisRaw("Vertical");
+
         if (isClimbing)
         {
-            rb.gravityScale = 0f;
-            rb.velocity = new Vector2(rb.velocity.x, vertical * speed);
+            rb.velocity = new Vector2(rb.velocity.x, verticalInput * climbSpeed);
+            rb.gravityScale = 0; // Disable gravity while climbing
         }
         else
         {
-            rb.gravityScale = 3f;
+            rb.gravityScale = 4; // Restore gravity when not climbing
         }
     }
 
@@ -38,7 +34,7 @@ public class ladeer_movement : MonoBehaviour
     {
         if (collision.CompareTag("Ladder"))
         {
-            isLadder = true;
+            isClimbing = true;
         }
     }
 
@@ -46,7 +42,6 @@ public class ladeer_movement : MonoBehaviour
     {
         if (collision.CompareTag("Ladder"))
         {
-            isLadder = false;
             isClimbing = false;
         }
     }
