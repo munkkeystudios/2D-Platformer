@@ -10,7 +10,6 @@ public class MovingHorizontalPlatform : MonoBehaviour
 
     private Vector3 previousPosition;
     public Vector3 DeltaMovement { get; private set; }
-    public Vector3 Velocity { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +38,6 @@ public class MovingHorizontalPlatform : MonoBehaviour
         }
 
         DeltaMovement = transform.position - previousPosition;
-        Velocity = DeltaMovement / Time.deltaTime;
         previousPosition = transform.position;
     }
 }

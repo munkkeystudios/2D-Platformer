@@ -6,31 +6,32 @@ public class PlayerMovementControl : MonoBehaviour
 {
     private Rigidbody2D rb;
 
-
-    [SerializeField] private float moveSpeed;  //can set player movement speed
-    [SerializeField] private float jump;       //can set player jump height
-    [SerializeField] private float coyoteTime; //can set coyote time (allow jump how many seconds after leaving a platform)
-    [SerializeField] private float bufferTime; //can set jump buffer time (allow jump how many seconds before touching the ground)
+    [SerializeField] private float moveSpeed;  // can set player movement speed
+    [SerializeField] private float jump;       // can set player jump height
+    [SerializeField] private float coyoteTime; // can set coyote time (allow jump how many seconds after leaving a platform)
+    [SerializeField] private float bufferTime; // can set jump buffer time (allow jump how many seconds before touching the ground)
     private float coyoteTimeCounter;
     private float bufferTimeCounter;
-    private bool isGrounded;            //to know if the player is grounded, useful to disable double jump
-    private float moveHorizontal;       //take horizontal movement input from keyboard
-    private float moveVertical;         //take vertical movement input from keyboard
+    private bool isGrounded;            // to know if the player is grounded, useful to disable double jump
+    private float moveHorizontal;       // take horizontal movement input from keyboard
+    private float moveVertical;         // take vertical movement input from keyboard
 
+    private MovingHorizontalPlatform currentPlatform;
+    private Vector3 previousPlatformPosition;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();  //storing rigidbody component in a variable
+        rb = gameObject.GetComponent<Rigidbody2D>();  // storing rigidbody component in a variable
     }
 
     // Update is called once per frame
     void Update()
     {
-        moveHorizontal = Input.GetAxisRaw("Horizontal");  //taking input from the keyboard (-1f is for left and 1f is for right)
-        moveVertical = Input.GetAxisRaw("Vertical");      //taking input from the keyboard (-1f is for down and 1f is for up)
+        moveHorizontal = Input.GetAxisRaw("Horizontal");  // taking input from the keyboard (-1f is for left and 1f is for right)
+        moveVertical = Input.GetAxisRaw("Vertical");      // taking input from the keyboard (-1f is for down and 1f is for up)
 
-        if (isGrounded)  //calculation for coyote time
+        if (isGrounded)  // calculation for coyote time
         {
             coyoteTimeCounter = coyoteTime;
         }
@@ -39,8 +40,7 @@ public class PlayerMovementControl : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-
-        if (moveVertical > 0f)   //calculation for buffer time
+        if (moveVertical > 0f)   // calculation for buffer time
         {
             bufferTimeCounter = bufferTime;
         }
@@ -49,28 +49,53 @@ public class PlayerMovementControl : MonoBehaviour
             bufferTimeCounter -= Time.deltaTime;
         }
 
-
-        if (coyoteTimeCounter > 0f && bufferTimeCounter > 0f)  //implementing jump
+        if (coyoteTimeCounter > 0f && bufferTimeCounter > 0f)  // implementing jump
         {
-            rb.velocity = new Vector2(rb.velocity.x, jump); //rb.velocity.x maintains the x-axis velocity rigidbody is currently travelling at
+            rb.velocity = new Vector2(rb.velocity.x, jump); // rb.velocity.x maintains the x-axis velocity rigidbody is currently travelling at
             coyoteTimeCounter = 0f;
             bufferTimeCounter = 0f;
         }
 
-        if (moveHorizontal > 0f || moveHorizontal < 0f)
+        if (currentPlatform != null)
         {
-            rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y); //rb.velocity.y maintains the y-axis velocity rigidbody is currently travelling at
+            Vector3 platformMovement = currentPlatform.transform.position - previousPlatformPosition;
+            transform.position += platformMovement;
+            previousPlatformPosition = currentPlatform.transform.position;
         }
 
+        if (moveHorizontal != 0f)
+        {
+            rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y); // rb.velocity.y maintains the y-axis velocity rigidbody is currently travelling at
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) //checking if the player is grounded or not using a very small box collider (on trigger setting) under the player 
+    private void FixedUpdate()
     {
-        isGrounded = true;
+        // Handle platform movement
+        if (currentPlatform != null)
+        {
+            Vector3 platformMovement = currentPlatform.transform.position - previousPlatformPosition;
+            transform.position += platformMovement;
+            previousPlatformPosition = currentPlatform.transform.position;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = collision.GetComponent<MovingHorizontalPlatform>();
+            previousPlatformPosition = currentPlatform.transform.position;
+            isGrounded = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isGrounded = false;
+        if (collision.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = null;
+            isGrounded = false;
+        }
     }
 }
