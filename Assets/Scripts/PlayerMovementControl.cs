@@ -82,20 +82,22 @@ public class PlayerMovementControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        isGrounded = true;
         if (collision.CompareTag("MovingPlatform"))
         {
             currentPlatform = collision.GetComponent<MovingHorizontalPlatform>();
             previousPlatformPosition = currentPlatform.transform.position;
-            isGrounded = true;
+            
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        isGrounded = false;
         if (collision.CompareTag("MovingPlatform"))
         {
             currentPlatform = null;
-            isGrounded = false;
+            
         }
     }
 }
