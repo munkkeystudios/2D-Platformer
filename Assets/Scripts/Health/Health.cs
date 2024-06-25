@@ -19,15 +19,7 @@ public class Health : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            TakeDamage(10);
-        }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Heal(10);
-        }
     }
     public void TakeDamage(float damage)
     {

@@ -16,7 +16,7 @@ public class PlayerMovementControl : MonoBehaviour
     private float moveHorizontal;       // take horizontal movement input from keyboard
     private float moveVertical;         // take vertical movement input from keyboard
 
-    private Transform currentPlatform;
+    private MovingHorizontalPlatform currentPlatform;
     private Vector3 previousPlatformPosition;
 
     // Start is called before the first frame update
@@ -56,6 +56,13 @@ public class PlayerMovementControl : MonoBehaviour
             bufferTimeCounter = 0f;
         }
 
+        if (currentPlatform != null)
+        {
+            Vector3 platformMovement = currentPlatform.transform.position - previousPlatformPosition;
+            transform.position += platformMovement;
+            previousPlatformPosition = currentPlatform.transform.position;
+        }
+
         if (moveHorizontal != 0f)
         {
             rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y); // rb.velocity.y maintains the y-axis velocity rigidbody is currently travelling at
@@ -64,34 +71,33 @@ public class PlayerMovementControl : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Handle platform movement
         if (currentPlatform != null)
         {
-            Vector3 platformMovement = currentPlatform.position - previousPlatformPosition;
+            Vector3 platformMovement = currentPlatform.transform.position - previousPlatformPosition;
             transform.position += platformMovement;
-            previousPlatformPosition = currentPlatform.position;
+            previousPlatformPosition = currentPlatform.transform.position;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("MovingPlatform"))
+        isGrounded = true;
+        if (collision.CompareTag("MovingPlatform"))
         {
-            currentPlatform = collision.transform;
-            previousPlatformPosition = currentPlatform.position;
+            currentPlatform = collision.GetComponent<MovingHorizontalPlatform>();
+            previousPlatformPosition = currentPlatform.transform.position;
             
         }
-        isGrounded = true;
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("MovingPlatform"))
+        isGrounded = false;
+        if (collision.CompareTag("MovingPlatform"))
         {
             currentPlatform = null;
             
         }
-        isGrounded = false;
     }
-
-
 }
