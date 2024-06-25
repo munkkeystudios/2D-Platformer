@@ -123,6 +123,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = other.GetComponent<MovingHorizontalPlatform>();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = null;
+        }
+    }
+
     private bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
@@ -135,3 +151,4 @@ public class PlayerMovement : MonoBehaviour
         return raycastHit.collider != null;
     }
 }
+
