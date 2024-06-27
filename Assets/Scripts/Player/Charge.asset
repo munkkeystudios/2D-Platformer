@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   range: 5
-  cooldownTime: 2
+  cooldownTime: 1
+  attackCollider: {fileID: 3688838342034780797, guid: e2d8d42666c92ca469edce914d7217fa, type: 3}
