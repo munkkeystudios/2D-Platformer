@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  damage: 10
+  damage: 15
   attackRange: 1.5
   attackInterval: 2
   attackTimer: 0
