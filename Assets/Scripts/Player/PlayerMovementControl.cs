@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerMovementControl : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator animator;
 
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float moveSpeed;  // can set player movement speed
     [SerializeField] private float jump;       // can set player jump height
     [SerializeField] private float coyoteTime; // can set coyote time (allow jump how many seconds after leaving a platform)
@@ -23,11 +25,13 @@ public class PlayerMovementControl : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();  // storing rigidbody component in a variable
+        animator = gameObject.GetComponent<Animator>(); 
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         moveHorizontal = Input.GetAxisRaw("Horizontal");  // taking input from the keyboard (-1f is for left and 1f is for right)
         moveVertical = Input.GetAxisRaw("Vertical");      // taking input from the keyboard (-1f is for down and 1f is for up)
 
@@ -63,10 +67,24 @@ public class PlayerMovementControl : MonoBehaviour
             previousPlatformPosition = currentPlatform.transform.position;
         }
 
+        animator.SetBool("RunSimple", moveHorizontal != 0f); //run animation
+        animator.SetBool("Grounded", !isGrounded); //jump animation
         if (moveHorizontal != 0f)
         {
             rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y); // rb.velocity.y maintains the y-axis velocity rigidbody is currently travelling at
+
+            //flipping the player sprite
+            if (moveHorizontal > 0.01f)
+            {   
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);            
+            }
+            else if (moveHorizontal < -0.01f)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
+
+        
     }
 
     private void FixedUpdate()
@@ -100,4 +118,33 @@ public class PlayerMovementControl : MonoBehaviour
             
         }
     }
+
+    /*
+    private int groundContactCount = 0; // Tracks the number of ground contacts
+
+    private void UpdateGroundedStatus()
+    {
+        isGrounded = groundContactCount > 0;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Check if the collided object is in the ground layer
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            groundContactCount++; // Increment on entering a ground collider
+            UpdateGroundedStatus();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // Check if the exited object is in the ground layer
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            groundContactCount--; // Decrement on exiting a ground collider
+            UpdateGroundedStatus();
+        }
+    }
+    */
 }
