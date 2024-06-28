@@ -13,12 +13,14 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            Debug.Log("playerATTACK");
             AttackNearestEnemy();
         }
     }
 
     void AttackNearestEnemy()
     {
+                Debug.Log("giving damage");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Enemy"));
         Collider2D closestEnemy = null;
         float closestDistance = float.MaxValue;
