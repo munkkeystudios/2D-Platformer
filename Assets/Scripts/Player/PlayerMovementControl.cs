@@ -8,13 +8,13 @@ public class PlayerMovementControl : MonoBehaviour
     private Animator animator;
 
     [SerializeField] private LayerMask groundLayer;
+    private BoxCollider2D boxCollider;
     [SerializeField] private float moveSpeed;  // can set player movement speed
     [SerializeField] private float jump;       // can set player jump height
     [SerializeField] private float coyoteTime; // can set coyote time (allow jump how many seconds after leaving a platform)
     [SerializeField] private float bufferTime; // can set jump buffer time (allow jump how many seconds before touching the ground)
     private float coyoteTimeCounter;
     private float bufferTimeCounter;
-    private bool isGrounded;            // to know if the player is grounded, useful to disable double jump
     private float moveHorizontal;       // take horizontal movement input from keyboard
     private float moveVertical;         // take vertical movement input from keyboard
 
@@ -25,7 +25,8 @@ public class PlayerMovementControl : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();  // storing rigidbody component in a variable
-        animator = gameObject.GetComponent<Animator>(); 
+        animator = gameObject.GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -35,7 +36,7 @@ public class PlayerMovementControl : MonoBehaviour
         moveHorizontal = Input.GetAxisRaw("Horizontal");  // taking input from the keyboard (-1f is for left and 1f is for right)
         moveVertical = Input.GetAxisRaw("Vertical");      // taking input from the keyboard (-1f is for down and 1f is for up)
 
-        if (isGrounded)  // calculation for coyote time
+        if (isGrounded())  // calculation for coyote time
         {
             coyoteTimeCounter = coyoteTime;
         }
@@ -68,7 +69,8 @@ public class PlayerMovementControl : MonoBehaviour
         }
 
         animator.SetBool("RunSimple", moveHorizontal != 0f); //run animation
-        animator.SetBool("Grounded", !isGrounded); //jump animation
+        animator.SetBool("Grounded", isGrounded()); //jump animation
+        
         if (moveHorizontal != 0f)
         {
             rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y); // rb.velocity.y maintains the y-axis velocity rigidbody is currently travelling at
@@ -100,7 +102,6 @@ public class PlayerMovementControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isGrounded = true;
         if (collision.CompareTag("MovingPlatform"))
         {
             currentPlatform = collision.GetComponent<MovingHorizontalPlatform>();
@@ -111,12 +112,16 @@ public class PlayerMovementControl : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isGrounded = false;
         if (collision.CompareTag("MovingPlatform"))
         {
             currentPlatform = null;
             
         }
+    }
+    private bool isGrounded()
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
+        return raycastHit.collider != null;
     }
 
     /*
