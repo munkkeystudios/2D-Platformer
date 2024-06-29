@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 //using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class SlimeMovement : MonoBehaviour
+public class PatrollerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject pointA;
     [SerializeField] private GameObject pointB;
