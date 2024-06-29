@@ -15,4 +15,6 @@ MonoBehaviour:
   damage: 10
   range: 10
   cooldownTime: 0
-  attackCollider: {fileID: 1209599875187854604, guid: 20766acd23f6f4d4bbf01f433417029b, type: 3}
+  width: 2
+  height: 2
+  animationTrigger: Attack1

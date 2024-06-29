@@ -8,7 +8,9 @@ public class AttackDefinitions : ScriptableObject
     public float damage;
     public float range;
     public float cooldownTime;
-    public GameObject attackCollider;
+    public float width;
+    public float height;
+    public string animationTrigger;
 }
 
 

@@ -3,6 +3,91 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public AttackDefinitions[] attacks;
+    public LayerMask enemyLayer;
+    private float[] attackCooldowns;
+    private Animator animator;
+
+    private Vector2 facingDirection = Vector2.right;//default, to be set correctly for player
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        attackCooldowns = new float[attacks.Length];
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < attackCooldowns.Length; i++)
+        {
+            if (attackCooldowns[i] > 0)
+            {
+                attackCooldowns[i] -= Time.deltaTime;
+            }
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("Z key pressed. Attempting attack 0.");
+            PerformAttack(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log("X key pressed. Attempting attack 1.");
+            PerformAttack(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log("C key pressed. Attempting attack 2.");
+            PerformAttack(2);
+        }
+    }
+
+    public void PerformAttack(int attackIndex)
+    {
+        if (attackIndex < 0 ||attackIndex> attacks.Length || attackCooldowns[attackIndex] > 0)
+        {
+            Debug.Log("Invalid attack index or attack on cooldown.");
+            return;
+        }
+
+        AttackDefinitions attack = attacks[attackIndex];
+        //animator.SetTrigger(attack.animationTrigger);
+        Vector2 boxCastSize = new Vector2(attack.width, attack.height);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, boxCastSize, 0f, facingDirection, attack.range, enemyLayer);
+
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                Health enemyHealth = hit.collider.GetComponent<Health>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.TakeDamage(attack.damage);
+                    continue;
+                }
+                
+            }
+            attackCooldowns[attackIndex] = attack.cooldownTime;
+        }
+        //animator.SetTrigger("IdleTrigger");
+        
+    }
+
+    public void ResetAttack()
+    {/*
+        animator.ResetTrigger("Attack1");
+        animator.ResetTrigger("Attack2");
+        animator.ResetTrigger("Attack3");
+        animator.SetTrigger("IdleTrigger");*/
+    }
+
+}
+/*
+
+
+ ATTEMPT AT DOING ALL THREE ATTACKS, wasn't working so currently implemented only 1 attack for first draft
 
 
     public float damage = 10f;
@@ -44,11 +129,6 @@ public class PlayerAttack : MonoBehaviour
             }
         }
     }
-}
-/*
-
-
- ATTEMPT AT DOING ALL THREE ATTACKS, wasn't working so currently implemented only 1 attack for first draft
 
 
     public AttackDefinitions[] attacks;
