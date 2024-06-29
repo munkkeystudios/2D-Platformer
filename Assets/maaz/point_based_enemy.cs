@@ -27,7 +27,6 @@ public class point_based_enemy : MonoBehaviour
     void Start()
     {
         chase_player = false;
-        anim = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -48,13 +47,11 @@ public class point_based_enemy : MonoBehaviour
             {
                 transform.localScale = new Vector3(monster_scale_x, monster_scale_y, 1);
                 transform.position += Vector3.left * speed * Time.deltaTime;
-                anim.SetBool("Move", true);
             }
             if (transform.position.x < player.transform.position.x)
             {
                 transform.localScale = new Vector3(-1 * monster_scale_x, monster_scale_y, 1);
                 transform.position += Vector3.right * speed * Time.deltaTime;
-                anim.SetBool("Move", true);
             }
         }
         else
@@ -78,11 +75,6 @@ public class point_based_enemy : MonoBehaviour
                     {
                         transform.localScale = new Vector3(-1 * monster_scale_x, monster_scale_y, 1);
                         transform.position += Vector3.right * (speed - idle_slowdown) * Time.deltaTime;
-                    }
-                    if (transform.position.x == reset_point.transform.position.x)
-                    {
-
-                        anim.SetBool("Move", false);
                     }
 
                 }
