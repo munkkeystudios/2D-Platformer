@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class FlyingDemonHealth : MonoBehaviour
 {
     public float maxHealth; //allow only geetting but not setting
-    [SerializeField]private float currentHealth;
+    [SerializeField] private float currentHealth;
 
     public delegate void HealthChanged(float currentHealth);//delegate for health change event (similar to function pointer in c++ )
     public event HealthChanged OnHealthChanged;// event for health change based on delegate, will notify the subscriber methods when health changes.
@@ -16,8 +16,8 @@ public class Health : MonoBehaviour
     Animator anim;
     void Awake()
     {
-        currentHealth = maxHealth;
         anim = GetComponent<Animator>();
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -35,6 +35,7 @@ public class Health : MonoBehaviour
         }
         else
         {
+            anim.SetBool("Hurt", true);
             currentHealth -= damage;//reducing health and notifying subscriber
             OnHealthChanged?.Invoke(currentHealth);
         }
@@ -43,16 +44,16 @@ public class Health : MonoBehaviour
     public void Heal(float healAmount)
     {
 
-       if (currentHealth + healAmount >= maxHealth)//same for healing, changes health and notifies subscriber, making sure to not go above max health
-       {
-           currentHealth = maxHealth;
-           OnHealthChanged?.Invoke(currentHealth);
-       }
-       else
-       {
-           currentHealth += healAmount;
-           OnHealthChanged?.Invoke(currentHealth);  
-       }
+        if (currentHealth + healAmount >= maxHealth)//same for healing, changes health and notifies subscriber, making sure to not go above max health
+        {
+            currentHealth = maxHealth;
+            OnHealthChanged?.Invoke(currentHealth);
+        }
+        else
+        {
+            currentHealth += healAmount;
+            OnHealthChanged?.Invoke(currentHealth);
+        }
     }
 
 }
