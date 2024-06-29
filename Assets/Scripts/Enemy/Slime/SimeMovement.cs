@@ -19,6 +19,7 @@ public class SlimeMovement : MonoBehaviour
     [SerializeField] private GameObject reset_point;
     [SerializeField] private GameObject player;
 
+    private bool facingRight = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,11 +58,28 @@ public class SlimeMovement : MonoBehaviour
         else if (player.transform.position.x < pointB.transform.position.x || player.transform.position.x > pointA.transform.position.x) 
         {
             anim.SetBool("Move", true);
+            if(reset_point.transform.position.x > this.transform.position.x && !facingRight)
+            {
+                Flip();
+            }
+            else if(reset_point.transform.position.x < this.transform.position.x && facingRight)
+            {
+                Flip();
+            }
             Vector2 newPosition = new Vector2(reset_point.transform.position.x, this.transform.position.y);
             transform.position = Vector2.MoveTowards(this.transform.position, newPosition, speed * Time.deltaTime);
         }
 
 
+    }
+
+    void Flip()
+    {
+        Vector3 currScale = gameObject.transform.localScale;
+        currScale.x *= -1;
+        gameObject.transform.localScale = currScale;
+
+        facingRight = !facingRight;
     }
 }
 
