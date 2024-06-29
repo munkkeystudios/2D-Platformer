@@ -200,10 +200,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'patroller '
       objectReference: {fileID: 0}
-    - target: {fileID: 2337844768069428260, guid: eb1cefb3ee47d6543b2a4da9ce3a8d0b, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 5416470446813297953, guid: eb1cefb3ee47d6543b2a4da9ce3a8d0b, type: 3}
       propertyPath: speed
       value: 3
