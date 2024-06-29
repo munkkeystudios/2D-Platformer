@@ -7,6 +7,8 @@ public class FlyingEnemyAttack : MonoBehaviour
     public Transform player;
     private Health playerHealth;
 
+    private Animator anim;
+
     public float damage = 10f;//damage to player
     public float attackRange = 1.5f;//attack range of enemy
     public float attackInterval = 2f;//time after which enemy can attack again
@@ -15,6 +17,7 @@ public class FlyingEnemyAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();    
         if (player!= null)
         {
             playerHealth= player.GetComponent<Health>();
@@ -30,6 +33,7 @@ public class FlyingEnemyAttack : MonoBehaviour
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        bool isTimerNull = false;
 
         if (attackTimer >0)
         {
@@ -37,8 +41,13 @@ public class FlyingEnemyAttack : MonoBehaviour
         }
         if (distanceToPlayer <= attackRange && attackTimer <= 0)//attack if in range and timer is up
         {
+            isTimerNull = true;
             Attack();
             attackTimer = attackInterval;
+        }
+        if(isTimerNull)
+        {
+            anim.SetBool("Attack", true);
         }
     }
 

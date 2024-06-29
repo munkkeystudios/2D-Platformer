@@ -8,7 +8,7 @@ public class EnemyActivationAI : MonoBehaviour
     public Transform player;
     public Transform homePos;
     private IAstarAI ai;
-    private bool playerInRange = false; 
+    private bool playerInRange = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,4 +39,5 @@ public class EnemyActivationAI : MonoBehaviour
             ai.SearchPath();
         }
     }
+
 }
