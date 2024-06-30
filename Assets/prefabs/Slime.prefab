@@ -82,7 +82,8 @@ GameObject:
   - component: {fileID: 1586513950042519718}
   - component: {fileID: 8600223939109786070}
   - component: {fileID: 8841201716151954598}
-  - component: {fileID: 1739264247839937773}
+  - component: {fileID: 6149016642648694884}
+  - component: {fileID: 3143350258886564488}
   m_Layer: 8
   m_Name: Slime
   m_TagString: Enemy
@@ -301,7 +302,8 @@ MonoBehaviour:
   attackRange: 1.5
   attackInterval: 2
   attackTimer: 0
---- !u!114 &1739264247839937773
+  interval: 1
+--- !u!114 &6149016642648694884
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,7 +312,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6487243386962996261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899191ba872dd9a4780a562421c43c10, type: 3}
+  m_Script: {fileID: 11500000, guid: 55a17f2102f75024898c4d8c7221ffbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthComponent: {fileID: 0}
+  healthBar: {fileID: 0}
+--- !u!114 &3143350258886564488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487243386962996261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c650b37d564f454285eaff18f784676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 50

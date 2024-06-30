@@ -11,7 +11,10 @@ public class SlimeAttack : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f;//attack range of enemy
     [SerializeField] private float attackInterval = 2f;//time after which enemy can attack again
     [SerializeField] private float attackTimer;//to check if the interval has completed
-    
+
+    private float timer = 0.0f;
+    [SerializeField] private float attackAnimationDelay = 1.0f;
+
 
     private Animator anim;
 
@@ -35,29 +38,32 @@ public class SlimeAttack : MonoBehaviour
 
         Vector2 tempA = transform.position - player.transform.position;
         float distanceToPlayer = Vector2.SqrMagnitude(tempA);
-        
-        bool isTimerNull = false;
+
 
         if (attackTimer > 0)
         {
-            isTimerNull = false;
             attackTimer -= Time.deltaTime;//updating attack timer
         }
         if (distanceToPlayer <= attackRange && attackTimer <= 0)//attack if in range and timer is up
         {
-            isTimerNull = true;
             Attack();
             attackTimer = attackInterval;
         }
-        if (isTimerNull)
-        {
-            anim.SetBool("isAttacking", true);
-        }
-        
-    }
 
-    void Attack()
-    {
-        playerHealth.TakeDamage(damage);
+
+        //To not play the attack animation continously i have introduced a time based loop
+        timer += Time.deltaTime;
+        if (timer > attackAnimationDelay)
+        {
+            timer = 0.0f;
+            anim.SetBool("Attack", true);
+        }
+        anim.SetBool("Attack", false);
+
+
+        void Attack()
+        {
+            playerHealth.TakeDamage(damage);
+        }
     }
 }

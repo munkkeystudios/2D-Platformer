@@ -13,7 +13,7 @@ public class SlimeHealth : MonoBehaviour
     public delegate void Died();//similarly a delegate for died event
     public event Died OnDied;//for death notifications
 
-    private Animator anim;
+    Animator anim;
     void Awake()
     {
         currentHealth = maxHealth;
@@ -22,21 +22,20 @@ public class SlimeHealth : MonoBehaviour
 
     void Update()
     {
-
     }
     public void TakeDamage(float damage)
     {
         if (currentHealth - damage <= 0)//checking if the damage results in death
         {
-            anim.SetBool("isDead", true);
             currentHealth = 0;//setting health to 0
             OnHealthChanged?.Invoke(currentHealth);//notifying subscriber about the health change
+            anim.SetBool("Dead", true);
             OnDied?.Invoke();//notifying subscriber about the death
         }
         else
         {
-            anim.SetBool("isHurt", true);
             currentHealth -= damage;//reducing health and notifying subscriber
+            anim.SetBool("Hurt", true);
             OnHealthChanged?.Invoke(currentHealth);
         }
     }
