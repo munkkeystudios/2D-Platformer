@@ -27,6 +27,11 @@ public class PlayerMovementControl : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();  // storing rigidbody component in a variable
         animator = gameObject.GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
+
+        if (rb == null ||animator == null || boxCollider == null)
+        {
+            Debug.LogError("Missing component in PlayerMovementControl");
+        }
     }
 
     // Update is called once per frame
@@ -91,7 +96,6 @@ public class PlayerMovementControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Handle platform movement
         if (currentPlatform != null)
         {
             Vector3 platformMovement = currentPlatform.transform.position - previousPlatformPosition;
@@ -120,10 +124,22 @@ public class PlayerMovementControl : MonoBehaviour
     }
     private bool isGrounded()
     {
+        if (boxCollider == null)
+        {
+            Debug.LogWarning("BoxCollider2D is not attached");
+            return false;
+        }
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
         return raycastHit.collider != null;
     }
-
+    public Vector2 FacingDirection
+    {
+        get
+        {
+            //positive scale of x means facing right and negative means facing left
+            return transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+        }
+    }
     /*
     private int groundContactCount = 0; // Tracks the number of ground contacts
 

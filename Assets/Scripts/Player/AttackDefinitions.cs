@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//for three attack types, not in use rn
+using UnityEngine.UI;
 [CreateAssetMenu(fileName = "New Attack", menuName = "Attack/AttackDefinitions")]
 public class AttackDefinitions : ScriptableObject
 {
-    public float damage;
-    public float range;
-    public float cooldownTime;
-    public float width;
-    public float height;
-    public string animationTrigger;
+
+    public float damage { get; private set; }
+    public float range { get; private set; }
+    public float cooldownTime { get; private set; }
+    public float width { get; private set; }
+    public float height { get; private set; }
+    public string animationTrigger { get; private set; }
 }
 
 

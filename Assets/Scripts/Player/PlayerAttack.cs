@@ -3,20 +3,31 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public AttackDefinitions[] attacks;
-    public LayerMask enemyLayer;
+    [SerializeField] private AttackDefinitions[] attacks;
+    [SerializeField] private LayerMask enemyLayer;
     private float[] attackCooldowns;
     private Animator animator;
 
     private Vector2 facingDirection = Vector2.right;//default, to be set correctly for player
+
+    private int lastAttackIndex = 0;
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        attackCooldowns = new float[attacks.Length];
+        if (attacks != null)
+        {
+            attackCooldowns = new float[attacks.Length];
+        }
+        else
+        {
+            Debug.LogWarning("Attack Array is not initialized.");
+        }
     }
 
     private void Update()
     {
+        if (attackCooldowns == null) return;
+
         for (int i = 0; i < attackCooldowns.Length; i++)
         {
             if (attackCooldowns[i] > 0)
@@ -45,14 +56,33 @@ public class PlayerAttack : MonoBehaviour
 
     public void PerformAttack(int attackIndex)
     {
-        if (attackIndex < 0 ||attackIndex> attacks.Length || attackCooldowns[attackIndex] > 0)
+        lastAttackIndex = attackIndex;
+        if (attacks == null || attackIndex < 0 ||attackIndex> attacks.Length || attackCooldowns[attackIndex] > 0 || attackCooldowns == null)
         {
             Debug.Log("Invalid attack index or attack on cooldown.");
             return;
         }
 
+        PlayerMovementControl movementControl = GetComponent<PlayerMovementControl>();
+        if (movementControl != null)
+        {
+            facingDirection = movementControl.FacingDirection;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerMovementControl component not found.");
+        }
+
         AttackDefinitions attack = attacks[attackIndex];
-        //animator.SetTrigger(attack.animationTrigger);
+        if (animator != null)
+        {
+            animator.SetBool(attack.animationTrigger, true);
+        }
+        else
+        {
+            Debug.LogWarning("Animator component not found.");
+        }
+
         Vector2 boxCastSize = new Vector2(attack.width, attack.height);
         RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, boxCastSize, 0f, facingDirection, attack.range, enemyLayer);
 
@@ -71,7 +101,7 @@ public class PlayerAttack : MonoBehaviour
             }
             attackCooldowns[attackIndex] = attack.cooldownTime;
         }
-        //animator.SetTrigger("IdleTrigger");
+        //animator.ResetTrigger(attack.animationTrigger);
         
     }
 
@@ -81,6 +111,20 @@ public class PlayerAttack : MonoBehaviour
         animator.ResetTrigger("Attack2");
         animator.ResetTrigger("Attack3");
         animator.SetTrigger("IdleTrigger");*/
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (attacks == null || attacks.Length == 0 || lastAttackIndex < 0 || lastAttackIndex>= attacks.Length)
+        {
+            return;
+        }
+
+        AttackDefinitions attack = attacks[lastAttackIndex];
+        Vector2 boxPos = (Vector2)transform.position + facingDirection * attack.range / 2;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(boxPos, new Vector2(attack.width, attack.height));
     }
 
 }
