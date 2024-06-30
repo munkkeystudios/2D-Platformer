@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 947782432533159450}
   - component: {fileID: 7659525614948439542}
   - component: {fileID: 3966142351616722881}
+  - component: {fileID: 4602702706227098107}
   m_Layer: 8
   m_Name: FlyingEnemy
   m_TagString: Enemy
@@ -360,6 +361,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   currentHealth: 0
+--- !u!114 &4602702706227098107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541480257251123333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f3af2fb3684df64fadcc4b1aa54e6d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &2603484581465620975
 GameObject:
   m_ObjectHideFlags: 0
