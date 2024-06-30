@@ -73,7 +73,7 @@ public class PlayerMovementControl : MonoBehaviour
             previousPlatformPosition = currentPlatform.transform.position;
         }
 
-        animator.SetBool("RunSimple", moveHorizontal != 0f); //run animation
+        animator.SetBool("RunSimple", moveHorizontal != 0f && isGrounded()); //run animation
         animator.SetBool("Grounded", isGrounded()); //jump animation
         
         if (moveHorizontal != 0f)
@@ -89,6 +89,10 @@ public class PlayerMovementControl : MonoBehaviour
             {
                 transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
+        }
+        else if(isGrounded())
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
         
