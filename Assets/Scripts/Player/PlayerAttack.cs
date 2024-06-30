@@ -130,10 +130,6 @@ public class PlayerAttack : MonoBehaviour
 }
 /*
 
-
- ATTEMPT AT DOING ALL THREE ATTACKS, wasn't working so currently implemented only 1 attack for first draft
-
-
     public float damage = 10f;
     public float attackRange = 1.5f;
     private float attackTimer;

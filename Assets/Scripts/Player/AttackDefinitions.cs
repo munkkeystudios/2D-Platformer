@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class AttackDefinitions : ScriptableObject
 {
 
-    public float damage { get; private set; }
-    public float range { get; private set; }
-    public float cooldownTime { get; private set; }
-    public float width { get; private set; }
-    public float height { get; private set; }
-    public string animationTrigger { get; private set; }
+    [SerializeField] public float damage; //{ get; private set; }
+    [SerializeField] public float range;// { get; private set; }
+    [SerializeField] public float cooldownTime; //{ get; private set; }
+    [SerializeField] public float width; //{ get; private set; }
+    [SerializeField] public float height;// { get; private set; }
+    [SerializeField] public string animationTrigger;// { get; private set; }
 }
 
 

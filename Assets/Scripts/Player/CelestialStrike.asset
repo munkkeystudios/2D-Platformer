@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CelestialStrike
   m_EditorClassIdentifier: 
   damage: 30
-  range: 3
+  range: 1.5
   cooldownTime: 1
-  width: 2
-  height: 2
+  width: 2.5
+  height: 1
   animationTrigger: Attack3
