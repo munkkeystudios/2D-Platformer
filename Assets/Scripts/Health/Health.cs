@@ -18,6 +18,10 @@ public class Health : MonoBehaviour
     {
         currentHealth = maxHealth;
         anim = GetComponent<Animator>();
+        if (anim == null)
+        {
+            Debug.LogError("Animator not found");
+        }
     }
 
     void Update()
@@ -28,13 +32,14 @@ public class Health : MonoBehaviour
     {
         if (currentHealth - damage <= 0)//checking if the damage results in death
         {
-            anim.SetBool("Dead", true);
+            anim.SetTrigger("Hurt");
             currentHealth = 0;//setting health to 0
             OnHealthChanged?.Invoke(currentHealth);//notifying subscriber about the health change
             OnDied?.Invoke();//notifying subscriber about the death
         }
         else
         {
+            anim.SetTrigger("Hurt");
             currentHealth -= damage;//reducing health and notifying subscriber
             OnHealthChanged?.Invoke(currentHealth);
         }

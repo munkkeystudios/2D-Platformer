@@ -7,6 +7,13 @@ public class HealthBarUpdater : MonoBehaviour
 {
     public Health healthComponent;//the player or enemy whose health bar is to be updated
     public Image healthBar;
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+
+    }
 
     private void OnEnable()//called when gameobject created
     {
@@ -30,6 +37,13 @@ public class HealthBarUpdater : MonoBehaviour
 
     private void HandleDeath()//handle death
     {
-        Destroy(gameObject);//currently just destroying the gameobject to be replaced with other logic
+        if (anim != null)
+        {
+            anim.SetBool("Death", true);
+        }//currently just destroying the gameobject to be replaced with other logic
+    }
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }
