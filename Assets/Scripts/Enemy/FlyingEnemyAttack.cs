@@ -12,41 +12,65 @@ public class FlyingEnemyAttack : MonoBehaviour
     public float attackInterval = 2f;//time after which enemy can attack again
     public float attackTimer;//to check if the interval has completed
 
+    private bool isAttacking;
+
     Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
-        anim= GetComponent<Animator>();
-        if (player!= null)
+        anim = GetComponent<Animator>();
+        if (player != null)
         {
-            playerHealth= player.GetComponent<Health>();
+            playerHealth = player.GetComponent<Health>();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerHealth ==null)
+        isAttacking = false;
+        if (playerHealth == null)
         {
             return;
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (attackTimer >0)
+        if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;//updating attack timer
         }
         if (distanceToPlayer <= attackRange && attackTimer <= 0)//attack if in range and timer is up
         {
-            anim.SetBool("Attack", true);
+            isAttacking = true;
             Attack();
             attackTimer = attackInterval;
         }
+
+        if (isAttacking)
+        {
+            Debug.Log("here");
+            StartCoroutine(StartAttack());
+        }
     }
 
-    void Attack()
+    IEnumerator StartAttack()
+    {
+        Debug.Log("startAttack");
+        yield return new WaitForSeconds(2f);
+        anim.SetBool("Attack", true);
+        StartCoroutine(EndAttack());
+    }
+
+    IEnumerator EndAttack()
+    {
+        Debug.Log("endAttack");
+        yield return new WaitForSeconds(1f);
+        anim.SetBool("Attack", false);
+    }
+
+        void Attack()
     {
         playerHealth.TakeDamage(damage);
     }

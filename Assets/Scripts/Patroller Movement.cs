@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.UIElements;
 //using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -9,19 +10,24 @@ public class PatrollerMovement : MonoBehaviour
     [SerializeField] private GameObject pointA;
     [SerializeField] private GameObject pointB;
     [SerializeField] private float speed;
-    [SerializeField] private float distanceFromPlayer;
-    [SerializeField] float temp;
+    [SerializeField] private float distanceFromPlayer = 1.0f;
     private Rigidbody2D rb;
     private Transform currentpoint;
+
+    bool facingRight = false;
+
 
 
     [SerializeField] private GameObject player;
     [SerializeField] private float chaseSpeed;
     private float distance;
 
+    private bool chase = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        Flip();
         rb = GetComponent<Rigidbody2D>();
         currentpoint = pointB.transform;
     }
@@ -39,24 +45,61 @@ public class PatrollerMovement : MonoBehaviour
         }
         else
         {
-           rb.velocity = new Vector2(-speed, 0); 
+
+            rb.velocity = new Vector2(-speed, 0); 
         }
 
-     if(distance < 25)
+        chase = false;
+     if(distance < 500000f)
         {
             if (player.transform.position.x > pointB.transform.position.x)
             {
                 if (player.transform.position.x < pointA.transform.position.x)
                 {
-                    //chase
-                    Vector2 newPosition = new Vector2(player.transform.position.x, this.transform.position.y); //to restrict movements in y direction
-                    if (distance > 0.5f)
+                    if (distance > distanceFromPlayer)
                     {
+                        //chase
+                        chase = true;
+                        Vector2 newPosition = new Vector2(player.transform.position.x, this.transform.position.y); //to restrict movements in y direction
                         transform.position = Vector2.MoveTowards(this.transform.position, newPosition, chaseSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        chase = true;
+                        rb.velocity = new Vector2(0, 0);
                     }
                    
                 }
             }
+        }
+
+     if(chase)
+        {
+            if(player.transform.position.x < transform.position.x && facingRight)
+            {
+                Debug.Log("flip1");
+                Flip();
+            }
+            if (player.transform.position.x > transform.position.x && !facingRight)
+            { 
+                Debug.Log("flip2");
+                Flip(); 
+            }
+        }
+     else
+        {
+            if(currentpoint == pointB.transform && !facingRight)
+            {
+
+                Debug.Log("flip3");
+                Flip();
+            }
+            if(currentpoint == pointA.transform && facingRight)
+            {
+                Debug.Log("flip4");
+                Flip();
+            }
+
         }
 
     }
@@ -67,9 +110,18 @@ public class PatrollerMovement : MonoBehaviour
         {
             currentpoint = pointA.transform;
         }
-        else if (temp < 1f && currentpoint == pointA.transform && collision.CompareTag("Patroller Point"))
+        else if (currentpoint == pointA.transform && collision.CompareTag("Patroller Point"))
         {
             currentpoint = pointB.transform;
         }
+    }
+
+    void Flip()
+    {
+        Vector3 currScale = gameObject.transform.localScale;
+        currScale.x *= -1;
+        gameObject.transform.localScale = currScale;
+
+        facingRight = !facingRight;
     }
 }
