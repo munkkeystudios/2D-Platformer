@@ -50,14 +50,12 @@ public class FlyingEnemyAttack : MonoBehaviour
 
         if (isAttacking)
         {
-            Debug.Log("here");
             StartCoroutine(StartAttack());
         }
     }
 
     IEnumerator StartAttack()
     {
-        Debug.Log("startAttack");
         yield return new WaitForSeconds(2f);
         anim.SetBool("Attack", true);
         StartCoroutine(EndAttack());
@@ -65,7 +63,6 @@ public class FlyingEnemyAttack : MonoBehaviour
 
     IEnumerator EndAttack()
     {
-        Debug.Log("endAttack");
         yield return new WaitForSeconds(1f);
         anim.SetBool("Attack", false);
     }

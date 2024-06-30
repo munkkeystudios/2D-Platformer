@@ -14,7 +14,11 @@ public class PatrollerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Transform currentpoint;
 
+    Animator anim;
+
     bool facingRight = false;
+
+    bool idle = false;
 
 
 
@@ -30,6 +34,7 @@ public class PatrollerMovement : MonoBehaviour
         Flip();
         rb = GetComponent<Rigidbody2D>();
         currentpoint = pointB.transform;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -41,11 +46,20 @@ public class PatrollerMovement : MonoBehaviour
         
         if (currentpoint == pointB.transform)
         {
+            if(idle)
+            {
+                Debug.Log("HERE");
+                anim.SetBool("Idle", false);
+            }
           rb.velocity = new Vector2(speed, 0);
         }
         else
         {
-
+            if (idle)
+            {
+                Debug.Log("HERE");
+                anim.SetBool("Idle", false);
+            }
             rb.velocity = new Vector2(-speed, 0); 
         }
 
@@ -66,6 +80,8 @@ public class PatrollerMovement : MonoBehaviour
                     else
                     {
                         chase = true;
+                        anim.SetBool("Idle", true);
+                        idle = true;
                         rb.velocity = new Vector2(0, 0);
                     }
                    

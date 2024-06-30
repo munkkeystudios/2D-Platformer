@@ -33,6 +33,7 @@ public class Health : MonoBehaviour
         if (currentHealth - damage <= 0)//checking if the damage results in death
         {
             anim.SetTrigger("Hurt");
+            anim.SetBool("Dead", true);
             currentHealth = 0;//setting health to 0
             OnHealthChanged?.Invoke(currentHealth);//notifying subscriber about the health change
             OnDied?.Invoke();//notifying subscriber about the death
