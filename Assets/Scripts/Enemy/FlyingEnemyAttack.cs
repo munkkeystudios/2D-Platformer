@@ -6,6 +6,7 @@ public class FlyingEnemyAttack : MonoBehaviour
 {
     [SerializeField] private Transform player;
     private Health playerHealth;
+    private Health health;
 
     [SerializeField] private float damage = 10f;//damage to player
     [SerializeField] private float attackRange = 1.5f;//attack range of enemy
@@ -19,9 +20,10 @@ public class FlyingEnemyAttack : MonoBehaviour
     private void Awake()
     {
         anim =GetComponent<Animator>();
-        if (anim == null)
+        health = GetComponent<Health>();
+        if (anim == null && health)
         {
-            Debug.LogError("Animator component not found in " + gameObject.name);
+            Debug.LogError("Animator or health component not found in " + gameObject.name);
         }
 
         if (player!= null)
@@ -53,7 +55,7 @@ public class FlyingEnemyAttack : MonoBehaviour
         {
             attackTimer -= Time.deltaTime;//updating attack timer
         }
-        if (distanceToPlayer <= attackRange && attackTimer <= 0)//attack if in range and timer is up
+        if (distanceToPlayer <= attackRange && attackTimer <= 0 && health.CurrentHealth!=0 )//attack if in range and timer is up
         {
             isAttacking = true;
             Attack();

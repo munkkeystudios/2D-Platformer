@@ -189,7 +189,6 @@ MonoBehaviour:
   damage: 10
   attackRange: 1.5
   attackInterval: 2
-  attackTimer: 0
 --- !u!50 &9202534619490122762
 Rigidbody2D:
   serializedVersion: 4
@@ -295,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c650b37d564f454285eaff18f784676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 65
   currentHealth: 0
 --- !u!1 &6660003733122560923
 GameObject:

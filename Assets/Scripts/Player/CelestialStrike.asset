@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 30
   range: 1.5
-  cooldownTime: 1
+  cooldownTime: 15
   width: 2.5
   height: 1
   animationTrigger: Attack3
