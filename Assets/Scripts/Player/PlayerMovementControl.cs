@@ -28,7 +28,7 @@ public class PlayerMovementControl : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
 
-        if (rb == null ||animator == null || boxCollider == null)
+        if (rb == null || animator == null || boxCollider == null)
         {
             Debug.LogError("Missing component in PlayerMovementControl");
         }
@@ -37,7 +37,7 @@ public class PlayerMovementControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         moveHorizontal = Input.GetAxisRaw("Horizontal");  // taking input from the keyboard (-1f is for left and 1f is for right)
         moveVertical = Input.GetAxisRaw("Vertical");      // taking input from the keyboard (-1f is for down and 1f is for up)
 
@@ -75,27 +75,27 @@ public class PlayerMovementControl : MonoBehaviour
 
         animator.SetBool("RunSimple", moveHorizontal != 0f && isGrounded()); //run animation
         animator.SetBool("Grounded", isGrounded()); //jump animation
-        
+
         if (moveHorizontal != 0f)
         {
             rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y); // rb.velocity.y maintains the y-axis velocity rigidbody is currently travelling at
 
             //flipping the player sprite
             if (moveHorizontal > 0.01f)
-            {   
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);            
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
             else if (moveHorizontal < -0.01f)
             {
                 transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
         }
-        else if(isGrounded())
+        else if (isGrounded())
         {
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        
+
     }
 
     private void FixedUpdate()
@@ -140,8 +140,7 @@ public class PlayerMovementControl : MonoBehaviour
         get
         {
             //positive scale of x means facing right and negative means facing left
-            return transform.localScale.x> 0 ?Vector2.right : Vector2.left;
+            return transform.localScale.x > 0 ? Vector2.right : Vector2.left;
         }
     }
 }
-

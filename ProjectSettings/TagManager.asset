@@ -8,6 +8,7 @@ TagManager:
   - MovingPlatform
   - Enemy
   - Patroller Point
+  - Slope
   layers:
   - Default
   - TransparentFX
@@ -42,6 +43,27 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2734567723
+    locked: 0
+  - name: background1
+    uniqueID: 1767567661
+    locked: 0
+  - name: wall backgorund
+    uniqueID: 2614617125
+    locked: 0
+  - name: wall
+    uniqueID: 1055849019
+    locked: 0
+  - name: wall dec
+    uniqueID: 336049261
+    locked: 0
+  - name: ground
+    uniqueID: 128373803
+    locked: 0
+  - name: platform
+    uniqueID: 2137851941
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
