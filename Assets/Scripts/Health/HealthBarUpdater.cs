@@ -12,7 +12,10 @@ public class HealthBarUpdater : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
+        if (anim == null)
+        {
+            Debug.LogError("Animator not found");
+        }
     }
 
     private void OnEnable()//called when gameobject created
@@ -40,7 +43,7 @@ public class HealthBarUpdater : MonoBehaviour
         if (anim != null)
         {
             anim.SetBool("Death", true);
-        }//currently just destroying the gameobject to be replaced with other logic
+        }
     }
     private void Deactivate()
     {

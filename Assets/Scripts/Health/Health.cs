@@ -32,15 +32,21 @@ public class Health : MonoBehaviour
     {
         if (currentHealth - damage <= 0)//checking if the damage results in death
         {
-            anim.SetTrigger("Hurt");
-            anim.SetBool("Dead", true);
+            if (anim != null)
+            {
+                anim.SetTrigger("Hurt"); // for enemies too add hurt animation with trigger of hurt
+            }
+            //anim.SetBool("Dead", true);
             currentHealth = 0;//setting health to 0
             OnHealthChanged?.Invoke(currentHealth);//notifying subscriber about the health change
             OnDied?.Invoke();//notifying subscriber about the death
         }
         else
         {
-            anim.SetTrigger("Hurt");
+            if (anim != null)
+            {
+                anim.SetTrigger("Hurt"); // for enemies too add hurt animation with trigger of hurt
+            }
             currentHealth -= damage;//reducing health and notifying subscriber
             OnHealthChanged?.Invoke(currentHealth);
         }

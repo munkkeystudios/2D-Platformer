@@ -18,7 +18,7 @@ public class PlayerMovementControl : MonoBehaviour
     private float moveHorizontal;       // take horizontal movement input from keyboard
     private float moveVertical;         // take vertical movement input from keyboard
 
-    private MovingHorizontalPlatform currentPlatform;
+    private Transform currentPlatform;
     private Vector3 previousPlatformPosition;
 
     // Start is called before the first frame update
@@ -112,18 +112,17 @@ public class PlayerMovementControl : MonoBehaviour
     {
         if (collision.CompareTag("MovingPlatform"))
         {
-            currentPlatform = collision.GetComponent<MovingHorizontalPlatform>();
-            previousPlatformPosition = currentPlatform.transform.position;
-            
+            currentPlatform = collision.transform;
+            previousPlatformPosition = currentPlatform.position;
         }
     }
+
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("MovingPlatform"))
         {
             currentPlatform = null;
-            
         }
     }
     private bool isGrounded()
@@ -133,7 +132,7 @@ public class PlayerMovementControl : MonoBehaviour
             Debug.LogWarning("BoxCollider2D is not attached");
             return false;
         }
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.2f, groundLayer);
         return raycastHit.collider != null;
     }
     public Vector2 FacingDirection
@@ -144,32 +143,5 @@ public class PlayerMovementControl : MonoBehaviour
             return transform.localScale.x > 0 ? Vector2.right : Vector2.left;
         }
     }
-    /*
-    private int groundContactCount = 0; // Tracks the number of ground contacts
-
-    private void UpdateGroundedStatus()
-    {
-        isGrounded = groundContactCount > 0;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Check if the collided object is in the ground layer
-        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
-        {
-            groundContactCount++; // Increment on entering a ground collider
-            UpdateGroundedStatus();
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        // Check if the exited object is in the ground layer
-        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
-        {
-            groundContactCount--; // Decrement on exiting a ground collider
-            UpdateGroundedStatus();
-        }
-    }
-    */
 }
+
