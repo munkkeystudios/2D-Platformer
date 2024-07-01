@@ -140,7 +140,7 @@ public class PlayerMovementControl : MonoBehaviour
         get
         {
             //positive scale of x means facing right and negative means facing left
-            return transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+            return transform.localScale.x> 0 ?Vector2.right : Vector2.left;
         }
     }
 }

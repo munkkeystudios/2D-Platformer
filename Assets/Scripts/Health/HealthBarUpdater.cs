@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class HealthBarUpdater : MonoBehaviour
 {
-    public Health healthComponent;//the player or enemy whose health bar is to be updated
-    public Image healthBar;
+    [SerializeField] private Health healthComponent;//the player or enemy whose health bar is to be updated
+    [SerializeField] private Image healthBar;
     private Animator anim;
 
     private void Awake()
@@ -14,30 +14,41 @@ public class HealthBarUpdater : MonoBehaviour
         anim = GetComponent<Animator>();
         if (anim == null)
         {
-            Debug.LogError("Animator not found");
+            Debug.LogError("Animator not found in " + gameObject.name);
+        }
+        if (healthComponent == null)
+        {
+            Debug.LogError("Health component not assigned in " + gameObject.name);
+        }
+        else if (healthBar == null)
+        {
+            Debug.LogError("HealthBar Image not assigned in " + gameObject.name);
         }
     }
-
     private void OnEnable()//called when gameobject created
     {
-        healthComponent.OnHealthChanged += UpdateHealthBar;//subscribing to the health change event of the healthComponent, meaning UpdateHealthBar will be called everytime health changes
-        healthComponent.OnDied += HandleDeath;//same for death calling handledeath
+        if (healthComponent != null)
+        {
+            healthComponent.OnHealthChanged += UpdateHealthBar;//subscribing to the health change event of the healthComponent, meaning UpdateHealthBar will be called everytime health changes
+            healthComponent.OnDied += HandleDeath;//same for death calling handledeath
+        }
     }
 
     private void OnDisable()//called when gameobject destroyed
     {
-        healthComponent.OnHealthChanged -= UpdateHealthBar;//unsubscribe to prevent memory leaks like for pointers in c++
-        healthComponent.OnDied -= HandleDeath;
-    }
-
-    private void UpdateHealthBar(float currentHealth)
-    {
-        if (healthComponent.maxHealth > 0)
+        if (healthComponent != null)
         {
-            healthBar.fillAmount = currentHealth / healthComponent.maxHealth;//calculating fill amount of health bar based on current and maximum health
+            healthComponent.OnHealthChanged -= UpdateHealthBar;//unsubscribe to prevent memory leaks like for pointers in c++
+            healthComponent.OnDied -= HandleDeath;
         }
     }
-
+    private void UpdateHealthBar(float currentHealth)
+    {
+        if (healthComponent.MaxHealth > 0)
+        {
+            healthBar.fillAmount = currentHealth / healthComponent.MaxHealth;//calculating fill amount of health bar based on current and maximum health
+        }
+    }
     private void HandleDeath()//handle death
     {
         if (anim != null)

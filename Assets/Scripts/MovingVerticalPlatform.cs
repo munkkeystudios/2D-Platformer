@@ -5,9 +5,9 @@ using UnityEngine;
 public class MovingVerticalPlatform : MonoBehaviour
 {
 
-    public Transform point1, point2;
-    public float speed;
-    public bool moveUp;
+    [SerializeField] private Transform point1, point2;
+    [SerializeField] private float speed;
+    [SerializeField] private bool moveUp;
     
 
 

@@ -4,25 +4,37 @@ using UnityEngine;
 
 public class FlyingEnemyAttack : MonoBehaviour
 {
-    public Transform player;
+    [SerializeField] private Transform player;
     private Health playerHealth;
 
-    public float damage = 10f;//damage to player
-    public float attackRange = 1.5f;//attack range of enemy
-    public float attackInterval = 2f;//time after which enemy can attack again
-    public float attackTimer;//to check if the interval has completed
+    [SerializeField] private float damage = 10f;//damage to player
+    [SerializeField] private float attackRange = 1.5f;//attack range of enemy
+    [SerializeField] private float attackInterval = 2f;//time after which enemy can attack again
+    private float attackTimer;//to check if the interval has completed
 
     private bool isAttacking;
-
-    Animator anim;
+    private Animator anim;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        anim = GetComponent<Animator>();
-        if (player != null)
+        anim =GetComponent<Animator>();
+        if (anim == null)
+        {
+            Debug.LogError("Animator component not found in " + gameObject.name);
+        }
+
+        if (player!= null)
         {
             playerHealth = player.GetComponent<Health>();
+            if (playerHealth ==null)
+            {
+                Debug.LogError("health component not found on player");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player transform is not assigned in " +gameObject.name);
         }
     }
 
@@ -67,7 +79,7 @@ public class FlyingEnemyAttack : MonoBehaviour
         anim.SetBool("Attack", false);
     }
 
-        void Attack()
+    void Attack()
     {
         playerHealth.TakeDamage(damage);
     }

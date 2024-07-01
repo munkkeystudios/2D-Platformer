@@ -13,6 +13,10 @@ public class ladder_movement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody2D component not found on this object");
+        }
     }
 
     private void Update()

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.UIElements;
-//using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PatrollerMovement : MonoBehaviour
 {
@@ -20,115 +19,102 @@ public class PatrollerMovement : MonoBehaviour
 
     bool idle = false;
 
-
-
     [SerializeField] private GameObject player;
     [SerializeField] private float chaseSpeed;
     private float distance;
 
     private bool chase = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         Flip();
         rb = GetComponent<Rigidbody2D>();
-        currentpoint = pointB.transform;
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody2D component not found on " + gameObject.name);
+        }
+
+        if (pointB == null)
+        {
+            Debug.LogError("PointB is not assigned on " + gameObject.name);
+        }
+        else
+        {
+            currentpoint = pointB.transform;
+        }
+
         anim = GetComponent<Animator>();
+        if (anim == null)
+        {
+            Debug.LogError("Animator component not found on " + gameObject.name);
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (player == null)
+        {
+            Debug.LogError("Player GameObject is not assigned.");
+            return;
+        }
+
         Vector2 tempA = transform.position - player.transform.position;
         distance = Vector2.SqrMagnitude(tempA);
 
-        
+        if (currentpoint == null)
+        {
+            Debug.LogError("Current point is not assigned.");
+            return;
+        }
+
         if (currentpoint == pointB.transform)
         {
-            if(idle)
+            if (idle)
             {
                 Debug.Log("HERE");
-                anim.SetBool("Idle", false);
+                anim?.SetBool("Idle", false);
             }
-          rb.velocity = new Vector2(speed, 0);
+            rb.velocity = new Vector2(speed, 0);
         }
         else
         {
             if (idle)
             {
                 Debug.Log("HERE");
-                anim.SetBool("Idle", false);
+                anim?.SetBool("Idle", false);
             }
-            rb.velocity = new Vector2(-speed, 0); 
+            rb.velocity = new Vector2(-speed, 0);
         }
 
         chase = false;
-     if(distance < 500000f)
+        if (distance < 500000f)
         {
-            if (player.transform.position.x > pointB.transform.position.x)
+            if (player.transform.position.x > pointB.transform.position.x && player.transform.position.x < pointA.transform.position.x)
             {
-                if (player.transform.position.x < pointA.transform.position.x)
+                if (distance > distanceFromPlayer)
                 {
-                    if (distance > distanceFromPlayer)
-                    {
-                        //chase
-                        chase = true;
-                        Vector2 newPosition = new Vector2(player.transform.position.x, this.transform.position.y); //to restrict movements in y direction
-                        transform.position = Vector2.MoveTowards(this.transform.position, newPosition, chaseSpeed * Time.deltaTime);
-                    }
-                    else
-                    {
-                        chase = true;
-                        anim.SetBool("Idle", true);
-                        idle = true;
-                        rb.velocity = new Vector2(0, 0);
-                    }
-                   
+                    chase = true;
+                    Vector2 newPosition = new Vector2(player.transform.position.x, this.transform.position.y);
+                    transform.position = Vector2.MoveTowards(this.transform.position, newPosition, chaseSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    chase = true;
+                    anim?.SetBool("Idle", true);
+                    idle = true;
+                    rb.velocity = new Vector2(0, 0);
                 }
             }
         }
 
-     if(chase)
-        {
-            if(player.transform.position.x < transform.position.x && facingRight)
-            {
-                Debug.Log("flip1");
-                Flip();
-            }
-            if (player.transform.position.x > transform.position.x && !facingRight)
-            { 
-                Debug.Log("flip2");
-                Flip(); 
-            }
-        }
-     else
-        {
-            if(currentpoint == pointB.transform && !facingRight)
-            {
-
-                Debug.Log("flip3");
-                Flip();
-            }
-            if(currentpoint == pointA.transform && facingRight)
-            {
-                Debug.Log("flip4");
-                Flip();
-            }
-
-        }
-
+        HandleFlip();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (currentpoint == pointB.transform && collision.CompareTag("Patroller Point"))
+        if (collision.CompareTag("Patroller Point"))
         {
-            currentpoint = pointA.transform;
-        }
-        else if (currentpoint == pointA.transform && collision.CompareTag("Patroller Point"))
-        {
-            currentpoint = pointB.transform;
+            currentpoint = currentpoint == pointB.transform ? pointA.transform : pointB.transform;
         }
     }
 
@@ -139,5 +125,35 @@ public class PatrollerMovement : MonoBehaviour
         gameObject.transform.localScale = currScale;
 
         facingRight = !facingRight;
+    }
+
+    void HandleFlip()
+    {
+        if (chase)
+        {
+            if (player.transform.position.x < transform.position.x && facingRight)
+            {
+                Debug.Log("flip1");
+                Flip();
+            }
+            else if (player.transform.position.x > transform.position.x && !facingRight)
+            {
+                Debug.Log("flip2");
+                Flip();
+            }
+        }
+        else
+        {
+            if (currentpoint == pointB.transform && !facingRight)
+            {
+                Debug.Log("flip3");
+                Flip();
+            }
+            else if (currentpoint == pointA.transform && facingRight)
+            {
+                Debug.Log("flip4");
+                Flip();
+            }
+        }
     }
 }

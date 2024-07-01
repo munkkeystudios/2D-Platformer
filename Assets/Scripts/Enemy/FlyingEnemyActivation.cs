@@ -7,22 +7,41 @@ public class EnemyActivationScript : MonoBehaviour
 {
     [SerializeField] private GameObject enemy;
 
-    private void Start()
+    private void Awake()
     {
+        if (enemy == null)
+        {
+            Debug.LogError("Enemy GameObject is not assigned in " + gameObject.name);
+        }
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            enemy.GetComponent<AIDestinationSetter>().Activate(true);
+            var aiDestinationSetter = enemy.GetComponent<AIDestinationSetter>();
+            if (aiDestinationSetter != null)
+            {
+                aiDestinationSetter.Activate(true);
+            }
+            else
+            {
+                Debug.LogError("AIdestinationset component not found on enemy.");
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            enemy.GetComponent<AIDestinationSetter>().Activate(false);
+            var aiDestinationSetter =enemy.GetComponent<AIDestinationSetter>();
+            if (aiDestinationSetter!= null)
+            {
+                aiDestinationSetter.Activate(false);
+            }
+            else
+            {
+                Debug.LogError("AIdestination component not found on enemy.");
+            }
         }
     }
 }

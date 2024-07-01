@@ -5,8 +5,8 @@ using Pathfinding;
 
 public class EnemyActivationAI : MonoBehaviour
 {
-    public Transform player;
-    public Transform homePos;
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform homePos;
     private IAstarAI ai;
     private bool playerInRange = false;
     // Start is called before the first frame update

@@ -10,14 +10,22 @@ public class PatrollerAttack : MonoBehaviour
     [SerializeField] private float damage = 10f;//damage to player
     [SerializeField] private float attackRange = 1.5f;//attack range of enemy
     [SerializeField] private float attackInterval = 2f;//time after which enemy can attack again
-    [SerializeField] private float attackTimer;//to check if the interval has completed
+    private float attackTimer;//to check if the interval has completed
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         if (player != null)
         {
-            playerHealth = player.GetComponent<Health>();
+            playerHealth =player.GetComponent<Health>();
+            if (playerHealth == null)
+            {
+
+                Debug.LogError("Health comp not found on player.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player is not assigned in " + gameObject.name);
         }
     }
 
@@ -29,7 +37,7 @@ public class PatrollerAttack : MonoBehaviour
             return;
         }
 
-        float distanceSquared = Vector2.SqrMagnitude(this.transform.position - player.transform.position);
+        float distanceSquared = (this.transform.position - player.transform.position).sqrMagnitude;
 
         if (attackTimer > 0)
         {

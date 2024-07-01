@@ -9,7 +9,6 @@ public class PlayerAttack : MonoBehaviour
     private Animator animator;
 
     private Vector2 facingDirection = Vector2.right;//default, to be set correctly for player
-
     private int lastAttackIndex = 0;
     private void Awake()
     {
@@ -76,15 +75,15 @@ public class PlayerAttack : MonoBehaviour
         AttackDefinitions attack = attacks[attackIndex];
         if (animator != null)
         {
-            animator.SetBool(attack.animationTrigger, true);
+            animator.SetBool(attack.AnimationTrigger, true);
         }
         else
         {
             Debug.LogWarning("Animator component not found.");
         }
 
-        Vector2 boxCastSize = new Vector2(attack.width, attack.height);
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, boxCastSize, 0f, facingDirection, attack.range, enemyLayer);
+        Vector2 boxCastSize = new Vector2(attack.Width, attack.Height);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, boxCastSize, 0f, facingDirection, attack.Range, enemyLayer);
 
 
         foreach (var hit in hits)
@@ -94,23 +93,14 @@ public class PlayerAttack : MonoBehaviour
                 Health enemyHealth = hit.collider.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.TakeDamage(attack.damage);
+                    enemyHealth.TakeDamage(attack.Damage);
                     continue;
                 }
                 
             }
-            attackCooldowns[attackIndex] = attack.cooldownTime;
+            attackCooldowns[attackIndex] = attack.CooldownTime;
         }
-        //animator.ResetTrigger(attack.animationTrigger);
         
-    }
-
-    public void ResetAttack()
-    {/*
-        animator.ResetTrigger("Attack1");
-        animator.ResetTrigger("Attack2");
-        animator.ResetTrigger("Attack3");
-        animator.SetTrigger("IdleTrigger");*/
     }
 
     private void OnDrawGizmos()
@@ -121,137 +111,10 @@ public class PlayerAttack : MonoBehaviour
         }
 
         AttackDefinitions attack = attacks[lastAttackIndex];
-        Vector2 boxPos = (Vector2)transform.position + facingDirection * attack.range / 2;
+        Vector2 boxPos = (Vector2)transform.position + facingDirection * attack.Range / 2;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(boxPos, new Vector2(attack.width, attack.height));
+        Gizmos.DrawWireCube(boxPos, new Vector2(attack.Width, attack.Height));
     }
 
 }
-/*
-
-    public float damage = 10f;
-    public float attackRange = 1.5f;
-    private float attackTimer;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Debug.Log("playerATTACK");
-            AttackNearestEnemy();
-        }
-    }
-
-    void AttackNearestEnemy()
-    {
-                Debug.Log("giving damage");
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Enemy"));
-        Collider2D closestEnemy = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (var enemy in hitEnemies)
-        {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestEnemy = enemy;
-            }
-        }
-
-        if (closestEnemy != null)
-        {
-            Health enemyH = closestEnemy.GetComponent<Health>();
-            if (enemyH != null)
-            {
-                enemyH.TakeDamage(damage);
-            }
-        }
-    }
-
-
-    public AttackDefinitions[] attacks;
-    private float[] lastAttackTimes;
-
-    private void Awake()
-    {
-        lastAttackTimes = new float[attacks.Length];
-        foreach (var attack in attacks)
-        {
-            if (attack.attackCollider != null)
-            {
-                Debug.Log($"Collider for attack {attack.name} is correctly assigned.");
-                attack.attackCollider.SetActive(false);
-            }
-            else
-            {
-                Debug.LogWarning($"Collider for attack {attack.name} is not assigned.");
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Debug.Log("Z key pressed. Attempting attack 0.");
-            StartCoroutine(ActivateAttackCollider(0));
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            Debug.Log("X key pressed. Attempting attack 1.");
-            StartCoroutine(ActivateAttackCollider(1));
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log("C key pressed. Attempting attack 2.");
-            StartCoroutine(ActivateAttackCollider(2));
-        }
-    }
-
-    IEnumerator ActivateAttackCollider(int attackIndex)
-    {
-        Debug.Log($"Attempting to activate collider for attack {attackIndex}.");
-        if (Time.time - lastAttackTimes[attackIndex] < attacks[attackIndex].cooldownTime)
-        {
-            Debug.Log($"Attack {attackIndex} is on cooldown.");
-            yield break;
-        }
-
-        GameObject collider = attacks[attackIndex].attackCollider;
-        if (collider != null)
-        {
-            Debug.Log($"Activating collider for attack {attackIndex}.");
-            Debug.Log($"Enemy Layer Mask: {LayerMask.GetMask("Enemy")}");
-            collider.SetActive(true);
-            //Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(collider.transform.position, collider.GetComponent<BoxCollider2D>().size, 0, LayerMask.GetMask("Enemy"));
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(collider.transform.position, 1f, LayerMask.GetMask("Enemy"));
-
-            if (hitEnemies.Length == 0)
-            {
-                Debug.Log("No enemies hit.");
-            }
-            else
-            {                 
-                Debug.Log($"Hit {hitEnemies.Length} enemies.");
-            }
-            foreach (var enemy in hitEnemies)
-            {
-                Debug.Log($"Hit enemy: {enemy.name}");
-                Health enemyHealth = enemy.GetComponent<Health>();
-                if (enemyHealth != null)
-                {
-                    enemyHealth.TakeDamage(attacks[attackIndex].damage);
-                }
-            }
-            yield return new WaitForSeconds(3f);
-            collider.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning($"Collider for attack {attackIndex} is null.");
-        }
-        lastAttackTimes[attackIndex] = Time.time;
-    }
-*/

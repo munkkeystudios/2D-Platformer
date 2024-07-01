@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MovingHorizontalPlatform : MonoBehaviour
 {
-    public Transform point1, point2;
-    public float speed;
-    public bool moveRight;
+    [SerializeField] private Transform point1, point2;
+    [SerializeField] private float speed;
+    [SerializeField] private bool moveRight;
 
     private Vector3 previousPosition;
     public Vector3 DeltaMovement { get; private set; }
@@ -14,6 +14,10 @@ public class MovingHorizontalPlatform : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (point1 == null || point2 == null)
+        {
+            Debug.LogError("One or both of the points are not assigned in " + gameObject.name);
+        }
         previousPosition = transform.position;
     }
 

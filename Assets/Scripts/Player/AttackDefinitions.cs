@@ -1,17 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 [CreateAssetMenu(fileName = "New Attack", menuName = "Attack/AttackDefinitions")]
 public class AttackDefinitions : ScriptableObject
 {
+    [SerializeField] private float damage;
+    [SerializeField] private float range;
+    [SerializeField] private float cooldownTime;
+    [SerializeField] private float width;
+    [SerializeField] private float height;
+    [SerializeField] private string animationTrigger;
 
-    [SerializeField] public float damage; //{ get; private set; }
-    [SerializeField] public float range;// { get; private set; }
-    [SerializeField] public float cooldownTime; //{ get; private set; }
-    [SerializeField] public float width; //{ get; private set; }
-    [SerializeField] public float height;// { get; private set; }
-    [SerializeField] public string animationTrigger;// { get; private set; }
+    public float Damage => damage;
+    public float Range => range;
+    public float CooldownTime => cooldownTime;
+    public float Width => width;
+    public float Height => height;
+    public string AnimationTrigger => animationTrigger;
 }
-
-

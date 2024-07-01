@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public float maxHealth; //allow only geetting but not setting
+    [SerializeField] private float maxHealth; //allow only geetting but not setting
     [SerializeField]private float currentHealth;
+
+    public float MaxHealth => maxHealth;
+    public float CurrentHealth => currentHealth;
 
     public delegate void HealthChanged(float currentHealth);//delegate for health change event (similar to function pointer in c++ )
     public event HealthChanged OnHealthChanged;// event for health change based on delegate, will notify the subscriber methods when health changes.
@@ -24,12 +27,10 @@ public class Health : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-
-    }
     public void TakeDamage(float damage)
     {
+        if (damage <= 0) return;
+
         if (currentHealth - damage <= 0)//checking if the damage results in death
         {
             if (anim != null)

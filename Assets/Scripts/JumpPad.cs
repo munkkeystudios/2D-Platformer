@@ -5,13 +5,22 @@ using UnityEngine;
 public class JumpPad : MonoBehaviour
 {
     [SerializeField] private float bounce;
-    // Start is called before the first frame update
+    private Rigidbody2D playerRb = null;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * bounce, ForceMode2D.Impulse);
+            if (playerRb == null)
+            {
+                playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+                if (playerRb == null)
+                {
+                    Debug.LogError("Rigidbody2D component not found on the player object.");
+                    return;
+                }
+            }
+            playerRb.AddForce(Vector2.up * bounce, ForceMode2D.Impulse);
         }
     }
-
 }
