@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50f85bd64897d644ad60e94f6aa0a22, type: 3}
   m_Name: Slash
   m_EditorClassIdentifier: 
-  damage: 7
+  damage: 4
   range: 0.6
   cooldownTime: 0.5
   width: 1.2

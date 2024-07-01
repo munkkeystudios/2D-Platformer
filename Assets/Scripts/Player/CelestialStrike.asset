@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50f85bd64897d644ad60e94f6aa0a22, type: 3}
   m_Name: CelestialStrike
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 18
   range: 1.5
   cooldownTime: 15
   width: 2.5

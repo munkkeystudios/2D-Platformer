@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50f85bd64897d644ad60e94f6aa0a22, type: 3}
   m_Name: Charge
   m_EditorClassIdentifier: 
-  damage: 12
+  damage: 8
   range: 1
   cooldownTime: 5
   width: 1.5
