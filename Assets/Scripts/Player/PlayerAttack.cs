@@ -99,7 +99,6 @@ public class PlayerAttack : MonoBehaviour
                 }
                 
             }
-            //attackCooldowns[attackIndex] = attack.CooldownTime;
         }
         
     }

@@ -29,6 +29,8 @@ public class DemonWingLoot : Loot
 
         lootObject.layer = LayerMask.NameToLayer("IgnorePicker");
 
+        demonWingComponent.StartJumpEffect();
+
         return lootObject;
     }
 }

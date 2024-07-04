@@ -22,6 +22,9 @@ public class SlimeGelLoot : Loot
 
         lootObject.layer = LayerMask.NameToLayer("IgnorePicker");
 
+        slimeGelComponent.StartJumpEffect();
+
+
         return lootObject;
     }
 }

@@ -21,6 +21,9 @@ public class WolfPeltLoot : Loot
         wolfPeltComponent.SetPeltData(this);
 
         lootObject.layer = LayerMask.NameToLayer("IgnorePicker");
+
+        wolfPeltComponent.StartJumpEffect();
+
         return lootObject;
     }
 }
