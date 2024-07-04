@@ -58,6 +58,11 @@ public class HealthBarUpdater : MonoBehaviour
     }
     private void Deactivate()
     {
+        LootBag lootBag = GetComponent<LootBag>();
+        if (lootBag != null)
+        {
+            lootBag.DropLoot(transform.position);
+        }
         gameObject.SetActive(false);
     }
 }

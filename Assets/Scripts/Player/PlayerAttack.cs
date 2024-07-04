@@ -61,6 +61,7 @@ public class PlayerAttack : MonoBehaviour
             Debug.Log("Invalid attack index or attack on cooldown.");
             return;
         }
+        attackCooldowns[attackIndex] = attacks[attackIndex].CooldownTime;
 
         PlayerMovementControl movementControl = GetComponent<PlayerMovementControl>();
         if (movementControl != null)
@@ -98,7 +99,7 @@ public class PlayerAttack : MonoBehaviour
                 }
                 
             }
-            attackCooldowns[attackIndex] = attack.CooldownTime;
+            //attackCooldowns[attackIndex] = attack.CooldownTime;
         }
         
     }
