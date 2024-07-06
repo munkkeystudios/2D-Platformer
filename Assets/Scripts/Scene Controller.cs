@@ -28,17 +28,27 @@ public class SceneController : MonoBehaviour
          SceneManager.sceneLoaded -= OnSceneLoaded;
      }
 
-     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-     {
-         // Assuming you have a way to access the player's Health component here
-         Health playerHealth = FindObjectOfType<Health>();
-         if (playerHealth != null)
-         {
-             // This will force the health bar to update
-             playerHealth.TriggerHealthChangedEvent();
-         }
-     }
-    
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Find the Health component of the player in the new scene
+        Health playerHealth = FindObjectOfType<Health>();
+        if (playerHealth != null)
+        {
+            // Force the health bar to update
+            playerHealth.TriggerHealthChangedEvent();
+        }
+
+        // New addition: Directly update the HealthBarUpdater component
+        HealthBarUpdater healthBarUpdater = FindObjectOfType<HealthBarUpdater>();
+        if (healthBarUpdater != null && playerHealth != null)
+        {
+            // Ensure the HealthBarUpdater is aware of the current health component
+            healthBarUpdater.SetHealthComponent(playerHealth);
+            // Manually trigger an update to the health bar UI
+            healthBarUpdater.UpdateHealthBar(playerHealth.CurrentHealth);
+        }
+    }
+
     public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

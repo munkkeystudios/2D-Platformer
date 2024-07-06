@@ -42,12 +42,30 @@ public class HealthBarUpdater : MonoBehaviour
             healthComponent.OnDied -= HandleDeath;
         }
     }
-    private void UpdateHealthBar(float currentHealth)
+    public void UpdateHealthBar(float currentHealth)
     {
         if (healthComponent.MaxHealth > 0)
         {
             healthBar.fillAmount = currentHealth / healthComponent.MaxHealth;//calculating fill amount of health bar based on current and maximum health
         }
+    }
+    public void SetHealthComponent(Health health)
+    {
+        if (healthComponent != null)
+        {
+            // Unsubscribe from the old Health component's events to prevent memory leaks
+            healthComponent.OnHealthChanged -= UpdateHealthBar;
+            healthComponent.OnDied -= HandleDeath;
+        }
+
+        healthComponent = health;
+
+        // Subscribe to the new Health component's events
+        healthComponent.OnHealthChanged += UpdateHealthBar;
+        healthComponent.OnDied += HandleDeath;
+
+        // Immediately update the health bar UI to reflect the current health state
+        UpdateHealthBar(healthComponent.CurrentHealth);
     }
     private void HandleDeath()//handle death
     {
