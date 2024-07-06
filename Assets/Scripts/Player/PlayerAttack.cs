@@ -10,9 +10,17 @@ public class PlayerAttack : MonoBehaviour
 
     private Vector2 facingDirection = Vector2.right;//default, to be set correctly for player
     private int lastAttackIndex = 0;
+
+    audiomanager audioManager;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<audiomanager>();
+
+        if(audioManager == null )
+        {
+            Debug.LogError("Audio not initialised");
+        }
         if (attacks != null)
         {
             attackCooldowns = new float[attacks.Length];
@@ -39,16 +47,19 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Debug.Log("Z key pressed. Attempting attack 0.");
+            audioManager.PlaySFX(audioManager.sword1);
             PerformAttack(0);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("X key pressed. Attempting attack 1.");
+            audioManager.PlaySFX(audioManager.sword2);
             PerformAttack(1);
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("C key pressed. Attempting attack 2.");
+            audioManager.PlaySFX(audioManager.celestialStrike);
             PerformAttack(2);
         }
     }

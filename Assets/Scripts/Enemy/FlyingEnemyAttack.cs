@@ -15,12 +15,19 @@ public class FlyingEnemyAttack : MonoBehaviour
 
     private bool isAttacking;
     private Animator anim;
+    audiomanager audioManager;
 
     // Start is called before the first frame update
     private void Awake()
     {
         anim =GetComponent<Animator>();
         health = GetComponent<Health>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<audiomanager>();
+
+        if (audioManager == null)
+        {
+            Debug.LogError("Audio not initialised");
+        }
         if (anim == null && health)
         {
             Debug.LogError("Animator or health component not found in " + gameObject.name);
@@ -58,6 +65,7 @@ public class FlyingEnemyAttack : MonoBehaviour
         if (distanceToPlayer <= attackRange && attackTimer <= 0 && health.CurrentHealth!=0 )//attack if in range and timer is up
         {
             isAttacking = true;
+            audioManager.PlaySFX(audioManager.enemyAttack);
             Attack();
             attackTimer = attackInterval;
         }
