@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private AttackDefinitions[] attacks;
+    public AttackDefinitions[] Attacks => attacks;
+
     [SerializeField] private LayerMask enemyLayer;
     private float[] attackCooldowns;
     private Animator animator;
