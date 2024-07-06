@@ -7,6 +7,7 @@ public class HealthPotionUse : MonoBehaviour
     [SerializeField] private int healAmount = 50;
     [SerializeField] Loot healthPotionLoot;
     Inventory inventory = Inventory.Instance;
+    private bool alreadyTriggered = false;
 
     private void Awake()
     {
@@ -17,6 +18,10 @@ public class HealthPotionUse : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (alreadyTriggered)
+        {
+            return;
+        }
         if (collision.CompareTag("Player"))
         {
             if (inventory.HasItem(healthPotionLoot))
@@ -26,6 +31,7 @@ public class HealthPotionUse : MonoBehaviour
                 if (player != null)
                 {
                     UseHealthPotion(player);
+                    alreadyTriggered = true;
                 }
             }
             else
