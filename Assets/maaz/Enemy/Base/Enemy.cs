@@ -13,8 +13,6 @@ public class Enemy : MonoBehaviour, Enemy_damageable, Enemy_moveable, TriggerChe
     public bool WithinAttackDistance { get; set; }
     public bool WithinAggroRange { get; set; }
 
-    public Animator anim;
-
 
     #region State Machine Variables
 

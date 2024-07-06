@@ -22,8 +22,6 @@ public class Enemy_AttackState : Enemy_State
     {
         base.EnterState();
 
-        Debug.LogError("Entered attack state");
-
         enemy.EnemyAttackBaseInstance.DoEnterLogic();
     }
 

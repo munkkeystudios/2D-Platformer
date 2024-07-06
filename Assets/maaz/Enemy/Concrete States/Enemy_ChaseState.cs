@@ -23,7 +23,6 @@ public class Enemy_ChaseState : Enemy_State
 
         Debug.LogError("entered chase state");
 
-        enemy.anim.SetBool("is_moving", true);
         enemy.EnemyChaseBaseInstance.DoEnterLogic();
     }
 
