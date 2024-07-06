@@ -15,9 +15,16 @@ public class InventoryTrigger : MonoBehaviour
     }
     public void TriggerInventory()
     {
-        if (inventoryPanel !=null)
+    if (inventoryPanel != null)
+    {
+        bool isActive = !inventoryPanel.activeSelf;
+        inventoryPanel.SetActive(isActive);
+
+        if (isActive)
         {
-            inventoryPanel.SetActive(!inventoryPanel.activeSelf);
-        }    
+            // Assuming you have a reference to the InventoryManager instance
+            InventoryManager.instance.DrawInventory(Inventory.Instance.InventoryList);
+        }
+    } 
     }
 }

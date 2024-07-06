@@ -49,22 +49,12 @@ public class InventoryManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        DrawInventory(Inventory.Instance.InventoryList); // Update this line to match how you access the inventory list
+        DrawInventory(Inventory.Instance.InventoryList);
     }
 
-    void DrawInventory(List<InventoryItem> inventory)
+    public void DrawInventory(List<InventoryItem> inventory)
     {
         ResetInventory();
-        /*
-        for (int i = 0; i < slots.Capacity; i++)
-        {
-            CreateInventorySlot();
-        }
-
-        for (int i=0; i <inventory.Count - 1; i++)
-        {
-            slots[i].DrawSlot(inventory[i]);
-        }*/
         for (int i = 0; i < inventory.Count; i++)
         {
             if (i >= slots.Count)
