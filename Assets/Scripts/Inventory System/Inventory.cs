@@ -69,4 +69,9 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public bool HasItem(Loot loot)
+    {
+        return lootDictionary.ContainsKey(loot);
+    }
+
 }

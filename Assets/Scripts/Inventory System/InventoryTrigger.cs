@@ -22,7 +22,6 @@ public class InventoryTrigger : MonoBehaviour
 
         if (isActive)
         {
-            // Assuming you have a reference to the InventoryManager instance
             InventoryManager.instance.DrawInventory(Inventory.Instance.InventoryList);
         }
     } 
