@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/junaid's/GamePlayScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/Level.unity
+    guid: 5977b8a815c11104c8df523844b60dd0
+  - enabled: 1
+    path: Assets/Scenes/Forest.unity
+    guid: f6ff915624c2a3d49bdcc72e12875f3c
+  - enabled: 1
+    path: Assets/Scenes/Village.unity
+    guid: 44b0428c6cf263d4b8bb5d89ad36fe06
+  - enabled: 1
+    path: Assets/Scenes/Boss.unity
+    guid: 36e26166b8df247488e46dab864970a9
   m_configObjects: {}

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance { get; private set; }
     public static event Action<List<InventoryItem>> InventoryChanged;
 
     [SerializeField] private List<InventoryItem> inventory = new List<InventoryItem>();
@@ -13,6 +14,16 @@ public class Inventory : MonoBehaviour
 
     void Awake()
     {
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
         inventory = new List<InventoryItem>();
         lootDictionary = new Dictionary<Loot, InventoryItem>();
     }

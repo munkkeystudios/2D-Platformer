@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Patroller Point
   - Slope
+  - CoinAmount
   layers:
   - Default
   - TransparentFX

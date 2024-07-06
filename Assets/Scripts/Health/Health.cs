@@ -25,6 +25,20 @@ public class Health : MonoBehaviour
         {
             Debug.LogError("Animator not found");
         }
+
+        // Load the player's health from PlayerStateManager
+        if (PlayerStateManager.instance != null)
+        {
+            currentHealth = PlayerStateManager.instance.GetPlayerHealth();
+        }
+        else
+        {
+            currentHealth = maxHealth;
+        }
+
+        OnHealthChanged?.Invoke(currentHealth);
+        Debug.Log($"Current Health: {currentHealth}, Max Health: {maxHealth}");
+
     }
 
     public void TakeDamage(float damage)
@@ -51,6 +65,11 @@ public class Health : MonoBehaviour
             currentHealth -= damage;//reducing health and notifying subscriber
             OnHealthChanged?.Invoke(currentHealth);
         }
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStateManager.instance.SetPlayerHealth((int)currentHealth);
+        }
+
     }
 
     public void Heal(float healAmount)
@@ -66,6 +85,16 @@ public class Health : MonoBehaviour
            currentHealth += healAmount;
            OnHealthChanged?.Invoke(currentHealth);  
        }
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStateManager.instance.SetPlayerHealth((int)currentHealth);
+        }
     }
+
+    public void TriggerHealthChangedEvent()
+    {
+        OnHealthChanged?.Invoke(CurrentHealth);
+    }
+   
 
 }
