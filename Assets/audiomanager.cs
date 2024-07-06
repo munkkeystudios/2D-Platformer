@@ -30,4 +30,5 @@ public class audiomanager : MonoBehaviour
     {
         SFX.PlayOneShot(clip);
     }
+
 }

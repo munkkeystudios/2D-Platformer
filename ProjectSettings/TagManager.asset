@@ -11,6 +11,7 @@ TagManager:
   - Slope
   - CoinAmount
   - Audio
+  - Villager
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Patroller Point
   - Player
   - IgnorePicker
-  - 
+  - Villager
   - 
   - 
   - 

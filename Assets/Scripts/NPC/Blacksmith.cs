@@ -56,7 +56,7 @@ public class Blacksmith : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && inRange)
         {
             Debug.Log("collision");
-            Invoke("Play", 1f);
+            Invoke("Play", 0.5f);
         }
     }
 
