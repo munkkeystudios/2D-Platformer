@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerLivesManager : MonoBehaviour
 {
@@ -54,7 +55,7 @@ public class PlayerLivesManager : MonoBehaviour
         else
         {
             Debug.Log("Game Over");
-            // Implement game over logic here
+            SceneManager.LoadSceneAsync(0);
         }
     }
     
