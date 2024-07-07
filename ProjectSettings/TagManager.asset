@@ -12,6 +12,7 @@ TagManager:
   - CoinAmount
   - Audio
   - Villager
+  - Water
   layers:
   - Default
   - TransparentFX

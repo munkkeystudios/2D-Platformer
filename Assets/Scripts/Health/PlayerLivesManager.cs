@@ -6,17 +6,24 @@ using UnityEngine;
 public class PlayerLivesManager : MonoBehaviour
 {
     [SerializeField] private int lives = 3;
-    [SerializeField] private Transform checkpoint;
+    private Vector3 respawnPosition;
+    private Vector3 startPosition;
     private Health playerHealth;
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
-        if (playerHealth == null || checkpoint == null)
+        if (playerHealth == null)
         {
-            Debug.LogError("PlayerLivesManager: Missing component or reference");
+            Debug.LogError("PlayerLivesManager: Missing Health component");
         }
+        startPosition = transform.position; // Capture the start position
+        respawnPosition = startPosition;
     }
+
+
+
+  
 
     private void OnEnable()
     {
@@ -27,36 +34,55 @@ public class PlayerLivesManager : MonoBehaviour
         playerHealth.OnDied -= HandleDeath;
     }
 
+    private IEnumerator RespawnDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the death animation to play
+        Respawn();
+    }
+
+    public void ReducePlayerSize()
+    {
+        transform.localScale = Vector3.zero;
+    }
     private void HandleDeath()
     {
         lives--;
-        if (lives>0)
+        if (lives > 0)
         {
-            RespawnAtCheckpoint();
+            StartCoroutine(RespawnDelay(2.0f));
         }
-
         else
         {
             Debug.Log("Game Over");
+            // Implement game over logic here
         }
     }
-    public void RespawnAtCheckpoint()
+    
+    public void UpdateCheckpoint(Transform checkpointTransform)
     {
-        // Ensure the player is active
-        gameObject.SetActive(true);
+        respawnPosition = checkpointTransform.position;
+    }
 
-        // Move player to checkpoint
-        transform.position = checkpoint.position;
+
+    private void Respawn()
+    {
+        gameObject.SetActive(true); // Ensure the player is active
+
+        // Restore the player's size
+        transform.localScale = Vector3.one;
+
+        // Move player to the last checkpoint or start position
+        transform.position = respawnPosition;
 
         // Fully heal the player
         playerHealth.Heal(playerHealth.MaxHealth);
 
-        // Optionally, reset other states as needed (e.g., animations)
+        // Reset animations or other states as needed
         Animator animator = GetComponent<Animator>();
         if (animator != null)
         {
             animator.SetBool("Death", false);
-            animator.Play("Idle"); // Assuming "Idle" is a base state, adjust as necessary
+            animator.Play("Idle"); // Adjust as necessary
         }
     }
 }
