@@ -47,19 +47,28 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Debug.Log("Z key pressed. Attempting attack 0.");
+            if (attackCooldowns[0] <=0)
+            {
             audioManager.PlaySFX(audioManager.sword1);
+            }
             PerformAttack(0);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("X key pressed. Attempting attack 1.");
-            audioManager.PlaySFX(audioManager.sword2);
+            if (attackCooldowns[1] <= 0)
+            {
+                audioManager.PlaySFX(audioManager.sword2);
+            }
             PerformAttack(1);
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("C key pressed. Attempting attack 2.");
-            audioManager.PlaySFX(audioManager.celestialStrike);
+            if (attackCooldowns[2] <= 0)
+            {
+                audioManager.PlaySFX(audioManager.celestialStrike);
+            }
             PerformAttack(2);
         }
     }

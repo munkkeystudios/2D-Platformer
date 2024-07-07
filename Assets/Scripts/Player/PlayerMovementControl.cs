@@ -21,6 +21,10 @@ public class PlayerMovementControl : MonoBehaviour
     private Transform currentPlatform;
     private Vector3 previousPlatformPosition;
 
+    private bool jumping = false;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +65,7 @@ public class PlayerMovementControl : MonoBehaviour
 
         if (coyoteTimeCounter > 0f && bufferTimeCounter > 0f)  // implementing jump
         {
+
             rb.velocity = new Vector2(rb.velocity.x, jump); // rb.velocity.x maintains the x-axis velocity rigidbody is currently travelling at
             coyoteTimeCounter = 0f;
             bufferTimeCounter = 0f;
@@ -93,8 +98,10 @@ public class PlayerMovementControl : MonoBehaviour
         else if (isGrounded())
         {
             rb.velocity = new Vector2(0f, rb.velocity.y);
+            jumping = true;
         }
 
+       
 
     }
 

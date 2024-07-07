@@ -13,6 +13,11 @@ public class audiomanager : MonoBehaviour
     [SerializeField] public AudioClip sword1;
     [SerializeField] public AudioClip sword2;
 
+    [SerializeField] public AudioClip playerRun;
+    [SerializeField] public AudioClip playerJump;
+    [SerializeField] public AudioClip playerDeath;
+    [SerializeField] public AudioClip enemyDeath;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +34,11 @@ public class audiomanager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         SFX.PlayOneShot(clip);
+    }
+
+    public void StopSFX()
+    {
+        SFX.Stop();
     }
 
 }

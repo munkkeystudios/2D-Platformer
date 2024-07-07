@@ -9,9 +9,17 @@ public class HealthBarUpdater : MonoBehaviour
     [SerializeField] private Image healthBar;
     private Animator anim;
 
+    audiomanager audioManager;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<audiomanager>();
+
+        if (audioManager == null)
+        {
+            Debug.LogError("Audio not initialised");
+        }
         if (anim == null)
         {
             Debug.LogError("Animator not found in " + gameObject.name);
@@ -72,6 +80,16 @@ public class HealthBarUpdater : MonoBehaviour
         if (anim != null)
         {
             anim.SetBool("Death", true);
+            if (this.CompareTag("Enemy"))
+            {
+
+                audioManager.PlaySFX(audioManager.enemyDeath);
+            }
+            else
+            {
+
+                audioManager.PlaySFX(audioManager.playerDeath);
+            }
         }
     }
     private void Deactivate()
