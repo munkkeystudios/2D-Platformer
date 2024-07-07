@@ -15,7 +15,7 @@ public class FlyingEnemyAttack : MonoBehaviour
 
     private bool isAttacking;
     private Animator anim;
-    audiomanager audioManager;
+     private audiomanager audioManager;
 
     // Start is called before the first frame update
     private void Awake()
@@ -28,7 +28,7 @@ public class FlyingEnemyAttack : MonoBehaviour
         {
             Debug.LogError("Audio not initialised");
         }
-        if (anim == null && health)
+        if (anim == null || health == null)
         {
             Debug.LogError("Animator or health component not found in " + gameObject.name);
         }

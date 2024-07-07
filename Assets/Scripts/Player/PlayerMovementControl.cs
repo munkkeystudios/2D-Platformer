@@ -125,7 +125,7 @@ public class PlayerMovementControl : MonoBehaviour
             currentPlatform = null;
         }
     }
-    private bool isGrounded()
+    public bool isGrounded()
     {
         if (boxCollider == null)
         {
