@@ -20,6 +20,10 @@ public class PlayerLivesManager : MonoBehaviour
         }
         startPosition = transform.position; // Capture the start position
         respawnPosition = startPosition;
+        if (PlayerStateManager.instance != null)
+        {
+            lives = PlayerStateManager.instance.GetPlayerLives();
+        }
     }
 
 
@@ -48,6 +52,7 @@ public class PlayerLivesManager : MonoBehaviour
     private void HandleDeath()
     {
         lives--;
+        PlayerStateManager.instance.SetPlayerLives(lives);
         if (lives > 0)
         {
             StartCoroutine(RespawnDelay(2.0f));

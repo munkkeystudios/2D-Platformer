@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerStateManager : MonoBehaviour
 {
     public static PlayerStateManager instance;
-    public int playerHealth = 200; 
+    public int playerHealth = 200;
+    public int playerLives = 3;
 
     private void Awake()
     {
@@ -28,5 +29,14 @@ public class PlayerStateManager : MonoBehaviour
     public int GetPlayerHealth()
     {
         return playerHealth;
+    }
+    public void SetPlayerLives(int lives)
+    {
+        playerLives = lives;
+    }
+
+    public int GetPlayerLives()
+    {
+        return playerLives;
     }
 }
