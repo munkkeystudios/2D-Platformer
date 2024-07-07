@@ -6,6 +6,8 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
     [SerializeField] Animator transitionAnim;
+    
+
 
     private void Awake()
     {
@@ -52,6 +54,7 @@ public class SceneController : MonoBehaviour
 
     public void NextLevel()
     {
+        Debug.Log("NextLevel called");
         StartCoroutine(LoadLevel());
     }
 
