@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthPotionUse : MonoBehaviour
 {
-    [SerializeField] private int healAmount = 50;
+     [SerializeField] private int healAmount = 50;
     [SerializeField] Loot healthPotionLoot;
     Inventory inventory = Inventory.Instance;
 
@@ -46,5 +46,4 @@ public class HealthPotionUse : MonoBehaviour
             Debug.Log("Health potion used.");
         }
     }
-
 }

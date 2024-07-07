@@ -16,4 +16,17 @@ public class AttackDefinitions : ScriptableObject
     public float Width => width;
     public float Height => height;
     public string AnimationTrigger => animationTrigger;
+
+    private void Awake()
+    {
+        if (animationTrigger == null)
+        {
+            Debug.LogError("AttackDefinitions has null values.");
+        }
+    }
+
+    public void SetDamage(float damage)
+    {
+        this.damage = damage;
+    }
 }
