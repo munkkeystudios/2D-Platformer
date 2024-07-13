@@ -13,9 +13,6 @@ GameObject:
   - component: {fileID: 3996138028942143334}
   - component: {fileID: 5236063041852658053}
   - component: {fileID: 7285592579593984774}
-  - component: {fileID: 3954870413378691946}
-  - component: {fileID: 6052570306502381106}
-  - component: {fileID: 7021515800862748324}
   m_Layer: 8
   m_Name: Boss 1
   m_TagString: Enemy
@@ -183,67 +180,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.1146579, y: 3.1532764}
   m_EdgeRadius: 0
---- !u!114 &3954870413378691946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4259532876807014861}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55a17f2102f75024898c4d8c7221ffbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthComponent: {fileID: 6052570306502381106}
-  healthBar: {fileID: 0}
---- !u!114 &6052570306502381106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4259532876807014861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c650b37d564f454285eaff18f784676, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 150
-  currentHealth: 0
---- !u!114 &7021515800862748324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4259532876807014861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 491a6d77967c8964c8f3601867ab7bb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack_range: 5
-  boss_room_width: 30
-  facing_right: 0
-  move_speed: 100
-  attack_dealt: 0
-  vulnerable_after_attack_timer: 3
-  time_elapsed_since_attack: 0
-  time_elapsed_in_vulnerable_state: 0
-  attack_cooldown_timer: 5
-  attack_width:
-  - 4
-  - 5
-  attack_height:
-  - 6
-  - 6
-  attack_damage:
-  - 15
-  - 30
-  attack_type: 0
-  player: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  spriteRenderer: {fileID: 5236063041852658053}

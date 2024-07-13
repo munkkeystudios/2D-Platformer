@@ -16,5 +16,5 @@ MonoBehaviour:
   range: 1.5
   cooldownTime: 10
   width: 2.5
-  height: 1
+  height: 1.8
   animationTrigger: Attack3
